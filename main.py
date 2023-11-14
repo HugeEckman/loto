@@ -1,5 +1,8 @@
 from classes import Player, ComputerPlayer, Game
 
+player1 = None
+player2 = None
+
 promt = f'{"Игра в лото":-^70}\n'\
         'В каком режиме хотите сыграть? Введите цифру желаемого варианта:\n\n'\
         '1. Человек против компьютера\n'\
