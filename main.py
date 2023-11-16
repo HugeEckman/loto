@@ -13,26 +13,23 @@ print(promt)
 
 while True:
     variant = int(input())
-    try:
-        if variant not in range(1, 4):
-            raise ValueError
-    except ValueError:
+
+    if variant not in range(1, 4):
         print('Введен некорректный символ, попробуйте ещё раз')
         continue
     else:
         break
 
-if variant == 1:
-    player1 = Player(name='Игрок')
-    player2 = ComputerPlayer(name='Компьютер')
-
-if variant == 2:
-    player1 = Player(name='Игрок1')
-    player2 = Player(name='Игрок2')
-
-if variant == 3:
-    player1 = ComputerPlayer(name='Компьютер1')
-    player2 = ComputerPlayer(name='Компьютер2')
+match variant:
+    case 1:
+        player1 = Player(name='Игрок')
+        player2 = ComputerPlayer(name='Компьютер')
+    case 2:
+        player1 = Player(name='Игрок1')
+        player2 = Player(name='Игрок2')
+    case 3:
+        player1 = ComputerPlayer(name='Компьютер1')
+        player2 = ComputerPlayer(name='Компьютер2')
 
 game = Game(player1, player2)
 game.start()

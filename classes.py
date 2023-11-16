@@ -18,12 +18,9 @@ class Player:
 
         while True:
             answer = input()
-            try:
-                if answer.lower() != 'y' or answer.lower() != 'n':
-                    break
-                else:
-                    raise ValueError
-            except ValueError:
+            if answer.lower() != 'y' or answer.lower() != 'n':
+                break
+            else:
                 print('Введен некорректный символ, попробуйте ещё раз')
                 continue
 
@@ -130,7 +127,7 @@ class Card:
         del self._all_nums[0]
 
     def is_number_in_card(self, number: int) -> bool:
-        return True if number in self._all_nums else False
+        number in self._all_nums
 
     def is_all_numbers_cross(self) -> bool:
         return True if len(self._all_nums) == 0 else False
@@ -138,14 +135,21 @@ class Card:
 
 class SequenceMaker:
     def __init__(self):
+
+        number_lower_bound = 1
+        number_upper_bound = 91  
+
         self._all_nums = []
 
-        for i in range(1, 91):
+        for i in range(number_lower_bound, number_upper_bound):
             self._all_nums.append(i)
 
     def get_nums(self) -> []:
+
+        card_number_amount = 15
+
         num_list = []       
-        for _ in range(15):
+        for _ in range(card_number_amount):
             length = len(self._all_nums)
             num_list.append(self._all_nums.pop(randint(0, length - 1)))
 
@@ -154,10 +158,13 @@ class SequenceMaker:
 
 class Bag:
     def __init__(self) -> None:
+        number_lower_bound = 1
+        number_upper_bound = 91  
+
         self._numbers = []
         self._remains = 0
 
-        for i in range(1, 91):
+        for i in range(number_lower_bound, number_upper_bound):
             self._numbers.append(i)
 
         self._remains = len(self._numbers)
@@ -184,6 +191,7 @@ class Game:
     def __init__(self, *players) -> None:
         self._players = players
         self.bag = Bag()
+        self.info = GameInfo()
 
     def start(self):
         maker = SequenceMaker()
@@ -193,8 +201,7 @@ class Game:
         player1.card = Card(maker.get_nums(), player1.name)
         player2.card = Card(maker.get_nums(), player2.name)
 
-        player1.card.draw()
-        player2.card.draw()
+        self.info.draw_cards()    
 
         while True:
             
@@ -206,10 +213,13 @@ class Game:
 
             number = self.bag.number
 
-            print(f'Бочёнок № {number}, бочёнков в мешке: {self.bag.remains}')
+            # print(f'Бочёнок № {number}, бочёнков в мешке: {self.bag.remains}')
+            self.info.barrels_info()
 
-            player1.card.draw()
-            player2.card.draw()
+            # player1.card.draw()
+            # player2.card.draw()
+
+            self.info.draw_cards()
 
             player1.make_a_move(number)
 
@@ -228,10 +238,14 @@ class Game:
 
             number = self.bag.number
             
-            print(f'Бочёнок № {number}, бочёнков в мешке: {self.bag.remains}')
+            # print(f'Бочёнок № {number}, бочёнков в мешке: {self.bag.remains}')
 
-            player1.card.draw()
-            player2.card.draw()
+            self.info.barrels_info()
+            
+            # player1.card.draw()
+            # player2.card.draw()
+
+            self.info.draw_cards()
 
             player2.make_a_move(number)
 
@@ -245,3 +259,21 @@ class Game:
 
             if isinstance(player1, ComputerPlayer) and isinstance(player2, ComputerPlayer):
                 sleep(2)
+
+
+class GameInfo(Game):
+    def __init__(self, *players):
+        super().__init__(*players)
+        self.player1 = self._players[0]
+        self.player2 = self._players[1]
+
+    def draw_cards(self) -> None:
+        self.player1.card.draw()
+        self.player2.card.draw()
+        
+    def barrels_info(self, number: int) -> None:
+        print(f'Бочёнок № {number}, бочёнков в мешке: {self.bag.remains}')
+
+    def is_dead_heat(self) -> bool:
+        return
+    
