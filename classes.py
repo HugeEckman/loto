@@ -213,12 +213,7 @@ class Game:
 
             number = self.bag.number
 
-            # print(f'Бочёнок № {number}, бочёнков в мешке: {self.bag.remains}')
-            self.info.barrels_info()
-
-            # player1.card.draw()
-            # player2.card.draw()
-
+            self.info.barrels_info(number)
             self.info.draw_cards()
 
             player1.make_a_move(number)
@@ -237,13 +232,8 @@ class Game:
             print(f'\nХод игрока {player2.name}')
 
             number = self.bag.number
-            
-            # print(f'Бочёнок № {number}, бочёнков в мешке: {self.bag.remains}')
 
-            self.info.barrels_info()
-            
-            # player1.card.draw()
-            # player2.card.draw()
+            self.info.barrels_info(number)
 
             self.info.draw_cards()
 
@@ -262,7 +252,7 @@ class Game:
 
 
 class GameInfo(Game):
-    def __init__(self, *players):
+    def __init__(self, *players) -> None:
         super().__init__(*players)
         self.player1 = self._players[0]
         self.player2 = self._players[1]
@@ -273,7 +263,4 @@ class GameInfo(Game):
         
     def barrels_info(self, number: int) -> None:
         print(f'Бочёнок № {number}, бочёнков в мешке: {self.bag.remains}')
-
-    def is_dead_heat(self) -> bool:
-        return
     
